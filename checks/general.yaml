@@ -41,3 +41,9 @@
   depends_on: debian
   bash: /sbin/sysctl kernel.sysrq | grep -q ' 0$'
 
+- name: bleachbit
+  desc: Use bleachbit regularly to improve your privacy
+  url: http://bleachbit.sourceforge.net/
+  risk: 2
+  difficulty: 2
+
