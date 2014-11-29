@@ -1,0 +1,43 @@
+---
+- name: debian
+  desc: On Debian systems, run security updates frequently with apt-get or aptitude
+  risk: 5
+  difficulty: 1
+  python: os.path.isfile('/etc/debian_version')
+
+- name: debian security archive
+  desc: Ensure the security archive is configured in APT
+  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch4.en.html#s-security-update
+  risk: 4
+  difficulty: 2
+  depends_on: debian
+  bash: apt-cache policy | grep -q security
+
+- name: bios password
+  desc: Configure a password on your BIOS
+  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch3.en.html#s-bios-passwd
+  risk: 2
+  difficulty: 3
+
+- name: harden-tools
+  desc: Install the harden-tools package
+  url: 
+  risk: 
+  difficulty: 4
+  depends_on: debian
+
+- name: harden-clients
+  desc: Install the harden-clients package
+  url: 
+  risk: 1
+  difficulty: 3
+  depends_on: debian
+
+- name: sysrq
+  desc: Consider disabling the Magic SysRq key
+  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch4.en.html#s-restrict-sysrq
+  risk: 1
+  difficulty: 4
+  depends_on: debian
+  bash: /sbin/sysctl kernel.sysrq | grep -q ' 0$'
+
