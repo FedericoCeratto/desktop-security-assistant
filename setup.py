@@ -27,7 +27,7 @@ setup(
     author="Federico Ceratto",
     author_email="federico.ceratto@gmail.com",
     description="Desktop Security Assistant",
-    license="GPLv3+",
+    license="AGPLv3+",
     url="https://github.com/FedericoCeratto/desktop-security-assistant",
     long_description="",
     classifiers=CLASSIFIERS,
