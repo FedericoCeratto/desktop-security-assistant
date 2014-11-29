@@ -6,10 +6,9 @@
 
 """
 
-# Released under AGPLv3+ license, see LICENSE.txt
+# Released under AGPLv3+ license, see LICENSE
 
 from argparse import ArgumentParser
-from collections import namedtuple
 from glob import glob
 from setproctitle import setproctitle
 import logging
@@ -20,6 +19,7 @@ import yaml
 from ui import UI
 
 log = logging.getLogger(__name__)
+
 
 def setup_logging():
     log.setLevel(logging.DEBUG)
@@ -34,13 +34,14 @@ class Check(object):
 
     def __init__(self, kw):
         keys = ('name', 'desc', 'url', 'risk', 'difficulty',
-                  'python', 'bash')
+                'python', 'bash')
         for k in keys:
             setattr(self, k, None)
 
         self.children = []
         self.depends_on = []
         self.__dict__.update(kw)
+
 
 def find_config_block(configuration, block_name):
     """Recursively find a configuration block"""
@@ -50,7 +51,8 @@ def find_config_block(configuration, block_name):
             return b
 
         if b.children:
-            return find_config_block(b.children, blocks)
+            return find_config_block(b.children, block_name)
+
 
 def scan_config_blocks(configuration):
     """Recurse through all config blocks, depth-first"""
@@ -72,7 +74,7 @@ def run_config_block(c):
             output = eval(c.python)
             c.status = 'active' if output else 'disabled'
             log.info("%r: status %r", c.name, c.status)
-        except Exception as e:
+        except Exception:
             log.error("%r: error", c.name, exc_info=True)
             c.status = 'error'
 
@@ -83,7 +85,7 @@ def run_config_block(c):
             output = subprocess.call(c.bash, shell=True)
             c.status = 'active' if output else 'disabled'
             log.info("%r: status %r", c.name, c.status)
-        except Exception as e:
+        except Exception:
             log.error("%r: error", c.name, exc_info=True)
             c.status = 'error'
 
@@ -102,6 +104,7 @@ def scan_and_run_config_blocks(configuration):
         if b.status != 'disabled' and b.children:
             for c in scan_and_run_config_blocks(b.children):
                 yield c
+
 
 def load_configuration_files(config_dir):
     """Load configuration files"""
@@ -133,7 +136,7 @@ def load_configuration_files(config_dir):
         for pos, block in enumerate(child_blocks):
             parent = find_config_block(config_tree, block.depends_on)
             if parent is None:
-                continue # hopefully the parent will show up later
+                continue  # hopefully the parent will show up later
 
             try:
                 parent.children.append(block)
@@ -145,7 +148,6 @@ def load_configuration_files(config_dir):
     return config_tree
 
 
-
 def parse_args():
     ap = ArgumentParser()
     ap.add_argument('-c', '--cli', help='run from command line')
@@ -153,6 +155,7 @@ def parse_args():
                     default='checks')
     args = ap.parse_args()
     return args
+
 
 def main():
     setproctitle('desktop-security-assistant')
