@@ -1,0 +1,6 @@
+# Used by setup.py sdist to include files in the source package
+include checks/*.yaml
+include setup.py
+include README.rst
+include LICENSE
+include *.png
