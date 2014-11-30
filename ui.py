@@ -67,6 +67,9 @@ class UI(object):
     @staticmethod
     def add_url(vbox, url):
         """Add URL"""
+        if url is None:
+            return
+
         label = gtk.LinkButton(url, label='Documentation')
         label.set_alignment(0, 0.5)
         label.show()
