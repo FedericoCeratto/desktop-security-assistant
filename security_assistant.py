@@ -40,8 +40,11 @@ class Check(object):
 
         self.children = []
         self.depends_on = []
+        self.hidden = False
         self.__dict__.update(kw)
 
+    def __repr__(self):
+        return repr(self.__dict__)
 
 def find_config_block(configuration, block_name):
     """Recursively find a configuration block"""
@@ -50,6 +53,7 @@ def find_config_block(configuration, block_name):
         if b.name == block_name:
             return b
 
+    for b in configuration:
         if b.children:
             return find_config_block(b.children, block_name)
 
@@ -82,7 +86,7 @@ def run_config_block(c):
         # execute Bash code
         log.info("%r: executing Bash %r", c.name, c.bash)
         try:
-            output = subprocess.call(c.bash, shell=True)
+            output = subprocess.call(c.bash, shell=True, executable='/bin/bash')
             c.status = 'active' if output else 'disabled'
             log.info("%r: status %r", c.name, c.status)
         except Exception:
@@ -123,8 +127,6 @@ def load_configuration_files(config_dir):
             for c in confs:
                 config_blocks.append(Check(c))
 
-    # ignore unnamed blocks
-    config_blocks = [c for c in config_blocks if c.name]
     log.debug("%d config blocks found", len(config_blocks))
 
     # create config hierarchy
@@ -165,7 +167,8 @@ def main():
     conf = load_configuration_files(args.config_dir)
 
     for c in scan_and_run_config_blocks(conf):
-        ui.add_check_tab(c)
+        if c.status != 'disabled' and not c.hidden:
+            ui.add_check_tab(c)
 
     ui.main()
 
