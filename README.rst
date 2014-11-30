@@ -30,7 +30,7 @@ It scans your Linux desktop or laptop and provide a set of suggestions.
 How is it different from security scanners like Tiger?
 ------------------------------------------------------
 
-* Focused on desktop users rather than servers
+* Focused on desktop users rather than servers administrators
 * Provides suggestions on every aspect of security: software and hardware configuration and usage
 * Simple hints on level of risk and how difficult it is to mitigate
 
