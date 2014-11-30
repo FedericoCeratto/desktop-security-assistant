@@ -21,14 +21,14 @@
 
 - name: harden-tools
   desc: Install the harden-tools package
-  url: 
-  risk: 
+  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch-automatic-harden.en.html#s6.1
+  risk: 1
   difficulty: 4
   depends_on: debian
 
 - name: harden-clients
   desc: Install the harden-clients package
-  url: 
+  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch-automatic-harden.en.html#s6.1
   risk: 1
   difficulty: 3
   depends_on: debian
@@ -47,3 +47,51 @@
   risk: 2
   difficulty: 2
 
+- name: install vrms
+  desc: Install the vrms application to detect non-free installed software
+  url: https://en.wikipedia.org/wiki/Vrms
+  risk: 2
+  difficulty: 1
+  python: not os.path.isfile('/usr/bin/vrms')
+
+- name: vrms
+  desc: The vrms application detected non-free software on your system. Run "vrms" in a terminal to have a detailed report.
+  url: https://en.wikipedia.org/wiki/Vrms
+  risk: 2
+  difficulty: 2
+  # Return the check as active only if vrms is installed and it is returning any package name (ignore blank lines)
+  bash: test -f /usr/bin/vrms && /usr/bin/vrms -s | grep -q -e '[[:alnum:]]'; exit $((1-$?))
+
+- name: xscreensaver
+  desc: xscreensaver is not running. Consider installing and running it to lock your screen when you are away.
+  risk: 1
+  difficulty: 1
+  bash: pgrep -c xscreensaver
+
+- name: iceweasel-firefox
+  desc: Iceweasel or Firefox are installed.
+  risk: 2
+  bash: dpkg -l firefox iceweasel >/dev/null; exit $((1-$?))
+
+- name: NoScript
+  desc: Iceweasel or Firefox are installed. Consider using NoScript to block potentially harmful JavaScript using the xul-ext-noscript package
+  risk: 3
+  difficulty: 2
+  bash: dpkg -l xul-ext-noscript > /dev/null
+  depends_on: iceweasel-firefox
+
+- name: Cookie Monster
+  desc: Iceweasel or Firefox are installed. Consider using Cookie Monster to filter cookies using the xul-ext-cookie-monster package
+  risk: 3
+  difficulty: 2
+  bash: dpkg -l xul-ext-cookie-monster > /dev/null
+  depends_on: iceweasel-firefox
+
+- name: flashblock
+  desc: Iceweasel or Firefox are installed. Consider using flashblock to block potentially harmful Flash using the xul-ext-flashblock package
+  risk: 3
+  difficulty: 2
+  bash: dpkg -l xul-ext-flashblock > /dev/null
+  depends_on: iceweasel-firefox
+
+# TODO: calibre plugins, vim plugins, bios, disk encryption, swap encryption
