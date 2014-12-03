@@ -32,13 +32,20 @@ How is it different from security scanners like Tiger?
 
 * Focused on desktop users rather than servers administrators
 * Provides suggestions on every aspect of security: software and hardware configuration and usage
-* Simple hints on level of risk and how difficult it is to mitigate
+* Hints on risk level and work required to mitigate it
 
 Development status
 ------------------
 
-In development
+In development. Testing and contributions are welcome!
 
+Screenshots 
+----------- 
+ 
+.. image:: https://raw.githubusercontent.com/FedericoCeratto/desktop-security-assistant/screenshots/screenshot1.jpg 
+ 
+.. image:: https://raw.githubusercontent.com/FedericoCeratto/desktop-security-assistant/screenshots/screenshot2.jpg 
+ 
 Roadmap
 -------
 
