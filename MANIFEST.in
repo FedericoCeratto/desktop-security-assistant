@@ -3,4 +3,5 @@ include checks/*.yaml
 include setup.py
 include README.rst
 include LICENSE
-include *.png
+include data/*.png
+include data/*.ui

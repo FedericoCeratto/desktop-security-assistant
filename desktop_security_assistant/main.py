@@ -17,6 +17,7 @@ import subprocess
 import yaml
 
 from ui import UI
+from utils import get_resource
 
 log = logging.getLogger(__name__)
 
@@ -45,6 +46,7 @@ class Check(object):
 
     def __repr__(self):
         return repr(self.__dict__)
+
 
 def find_config_block(configuration, block_name):
     """Recursively find a configuration block"""
@@ -86,7 +88,8 @@ def run_config_block(c):
         # execute Bash code
         log.info("%r: executing Bash %r", c.name, c.bash)
         try:
-            output = subprocess.call(c.bash, shell=True, executable='/bin/bash')
+            output = subprocess.call(c.bash, shell=True,
+                                     executable='/bin/bash')
             c.status = 'active' if output else 'disabled'
             log.info("%r: status %r", c.name, c.status)
         except Exception:
@@ -110,10 +113,10 @@ def scan_and_run_config_blocks(configuration):
                 yield c
 
 
-def load_configuration_files(config_dir):
+def load_configuration_files():
     """Load configuration files"""
-    path = os.path.abspath(config_dir)
-    path_glob = os.path.join(path, '*.yaml')
+    path_glob = get_resource('checks', '*.yaml')
+    log.debug("scanning %r", path_glob)
     fnames = sorted(glob(path_glob))
     log.debug("%d config files to be loaded", len(fnames))
 
@@ -153,8 +156,6 @@ def load_configuration_files(config_dir):
 def parse_args():
     ap = ArgumentParser()
     ap.add_argument('-c', '--cli', help='run from command line')
-    ap.add_argument('--config-dir', help='configuration directory',
-                    default='checks')
     args = ap.parse_args()
     return args
 
@@ -164,7 +165,7 @@ def main():
     setup_logging()
     args = parse_args()
     ui = UI()
-    conf = load_configuration_files(args.config_dir)
+    conf = load_configuration_files()
 
     for c in scan_and_run_config_blocks(conf):
         if c.status != 'disabled' and not c.hidden:

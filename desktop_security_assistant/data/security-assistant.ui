@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkApplicationWindow" id="ui">
+    <property name="can_focus">False</property>
+    <property name="margin_right">2</property>
+    <property name="margin_bottom">2</property>
+    <property name="title" translatable="yes">desktop security assistant</property>
+    <property name="default_width">500</property>
+    <property name="default_height">500</property>
+    <property name="icon">icon.png</property>
+    <property name="gravity">center</property>
+    <child>
+      <object class="GtkNotebook" id="notebook">
+        <property name="width_request">300</property>
+        <property name="height_request">200</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="margin_left">2</property>
+        <property name="margin_top">2</property>
+        <property name="tab_pos">left</property>
+        <property name="scrollable">True</property>
+        <child>
+          <object class="GtkOverlay" id="overlay1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+        </child>
+        <child type="tab">
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child type="tab">
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child type="tab">
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 CLASSIFIERS = map(str.strip,
 """Environment :: Console
@@ -17,7 +17,7 @@ Topic :: Security
 
 entry_points = {
     'console_scripts': [
-        'security-assistant = security_assistant:main',
+        'security-assistant = desktop_security_assistant.main:main',
     ]
 }
 
@@ -33,14 +33,13 @@ setup(
     classifiers=CLASSIFIERS,
     keywords="desktop security",
     install_requires=[
-        'gtk2',
         'setproctitle>=1.0.1',
     ],
+    packages=['desktop_security_assistant'],
+    package_dir={'desktop_security_assistant': 'desktop_security_assistant'},
     platforms=['Linux'],
     zip_safe=False,
-    test_suite='nose.collector',
-    tests_require=['nose'],
     entry_points=entry_points,
     # Used by setup.py bdist to include files in the binary package
-    package_data={'security-assistant': ['checks/*.yaml']},
+    package_data={'desktop_security_assistant': ['checks/*.yaml']},
 )
