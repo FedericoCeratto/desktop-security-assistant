@@ -1,17 +1,30 @@
 ---
 - name: debian
-  desc: On Debian systems, run security updates frequently with apt-get or aptitude
-  risk: 5
+  desc: On Debian systems, run security updates frequently with apt-get or synaptic
   difficulty: 1
   python: os.path.isfile('/etc/debian_version')
 
 - name: debian security archive
   desc: Ensure the security archive is configured in APT
   url: https://www.debian.org/doc/manuals/securing-debian-howto/ch4.en.html#s-security-update
-  risk: 4
+  risk: 3
   difficulty: 2
   depends_on: debian
   bash: apt-cache policy | grep -q security
+
+- name: apt-get update
+  desc: The APT package index has not been updated in more than 7 days. Update it with with "apt-get update" or synaptic
+  risk: 3
+  difficulty: 1
+  depends_on: debian
+  bash: find /var/cache/apt/pkgcache.bin -mtime +7 | grep -q pkgcache; exit $((1-$?))
+
+- name: apt-get security
+  desc: The are security updates to be installed. Perform an upgrade with "apt-get upgrade" or synaptic
+  risk: 3
+  difficulty: 1
+  depends_on: debian
+  bash: apt-get -s dist-upgrade |grep "^Inst" |grep -q -i ':securi'; exit $((1-$?))
 
 - name: bios password
   desc: Configure a password on your BIOS
@@ -94,4 +107,14 @@
   bash: dpkg -l xul-ext-flashblock > /dev/null
   depends_on: iceweasel-firefox
 
+- name: flashplugin
+  desc: The "flashplugin-nonfree" package is installed. Keep in mind that the package cannot receive security updates from Debian
+  url: https://wiki.debian.org/FlashPlayer
+  risk: 3
+  difficulty: 2
+  bash: dpkg -l xul-ext-cookie-monster > /dev/null
+  depends_on: debian
+
 # TODO: calibre plugins, vim plugins, bios, disk encryption, swap encryption
+# wipe on shutdown/suspend: ram, swap, gnupg password, ssh agent, disk password
+# (by unmounting it), /tmp
