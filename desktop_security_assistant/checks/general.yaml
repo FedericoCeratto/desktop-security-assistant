@@ -1,6 +1,6 @@
 ---
 - name: debian
-  desc: On Debian systems, run security updates frequently with apt-get or synaptic
+  desc: On Debian systems, run security updates frequently with apt-get or pts:synaptic. pts:apticron can be used to remind you of pending security updates.
   difficulty: 1
   python: os.path.isfile('/etc/debian_version')
 
@@ -13,14 +13,14 @@
   bash: apt-cache policy | grep -q security
 
 - name: apt-get update
-  desc: The APT package index has not been updated in more than 7 days. Update it with with "apt-get update" or synaptic
+  desc: The APT package index has not been updated in more than 7 days. Update it with with "apt-get update" or pts:synaptic
   risk: 3
   difficulty: 1
   depends_on: debian
   bash: find /var/cache/apt/pkgcache.bin -mtime +7 | grep -q pkgcache; exit $((1-$?))
 
 - name: apt-get security
-  desc: The are security updates to be installed. Perform an upgrade with "apt-get upgrade" or synaptic
+  desc: The are security updates to be installed. Perform an upgrade with "apt-get upgrade" or pts:synaptic
   risk: 3
   difficulty: 1
   depends_on: debian
@@ -33,17 +33,19 @@
   difficulty: 3
 
 - name: harden-tools
-  desc: Install the harden-tools package
-  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch-automatic-harden.en.html#s6.1
-  risk: 1
-  difficulty: 4
-  depends_on: debian
-
-- name: harden-clients
-  desc: Install the harden-clients package
+  desc: Install the pts:harden-tools package
   url: https://www.debian.org/doc/manuals/securing-debian-howto/ch-automatic-harden.en.html#s6.1
   risk: 1
   difficulty: 3
+  bash: dpkg -l harden-tools > /dev/null
+  depends_on: debian
+
+- name: harden-clients
+  desc: Install the pts:harden-clients package to prevent unsecure client applications from being installed
+  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch-automatic-harden.en.html#s6.1
+  risk: 1
+  difficulty: 3
+  bash: dpkg -l harden-clients > /dev/null
   depends_on: debian
 
 - name: sysrq
@@ -55,20 +57,20 @@
   bash: /sbin/sysctl kernel.sysrq | grep -q ' 0$'
 
 - name: bleachbit
-  desc: Use bleachbit regularly to improve your privacy
+  desc: Use pts:bleachbit regularly to improve your privacy
   url: http://bleachbit.sourceforge.net/
   risk: 2
   difficulty: 2
 
 - name: install vrms
-  desc: Install the vrms application to detect non-free installed software
+  desc: Install the pts:vrms application to detect non-free installed software
   url: https://en.wikipedia.org/wiki/Vrms
   risk: 2
   difficulty: 1
   python: not os.path.isfile('/usr/bin/vrms')
 
 - name: vrms
-  desc: The vrms application detected non-free software on your system. Run "vrms" in a terminal to have a detailed report.
+  desc: The pts:vrms application detected non-free software on your system. Run "vrms" in a terminal to have a detailed report.
   url: https://en.wikipedia.org/wiki/Vrms
   risk: 2
   difficulty: 2
@@ -76,45 +78,76 @@
   bash: test -f /usr/bin/vrms && /usr/bin/vrms -s | grep -q -e '[[:alnum:]]'; exit $((1-$?))
 
 - name: xscreensaver
-  desc: xscreensaver is not running. Consider installing and running it to lock your screen when you are away.
+  desc: pts:xscreensaver is not running. Consider installing and running it to lock your screen when you are away.
   risk: 1
   difficulty: 1
   bash: pgrep -c xscreensaver
 
 - name: iceweasel-firefox
-  desc: Iceweasel or Firefox are installed.
+  desc: "Iceweasel or Firefox are installed. Consider using the Tor Browser for better security: pts:torbrowser-launcher"
   risk: 2
   bash: dpkg -l firefox iceweasel >/dev/null; exit $((1-$?))
 
 - name: NoScript
-  desc: Iceweasel or Firefox are installed. Consider using NoScript to block potentially harmful JavaScript using the xul-ext-noscript package
+  desc: Iceweasel or Firefox are installed. Use NoScript from the pts:xul-ext-noscript package to block potentially harmful JavaScript
   risk: 3
   difficulty: 2
   bash: dpkg -l xul-ext-noscript > /dev/null
   depends_on: iceweasel-firefox
 
 - name: Cookie Monster
-  desc: Iceweasel or Firefox are installed. Consider using Cookie Monster to filter cookies using the xul-ext-cookie-monster package
+  desc: Iceweasel or Firefox are installed. Using Cookie Monster from the pts:xul-ext-cookie-monster package to filter cookies
   risk: 3
   difficulty: 2
   bash: dpkg -l xul-ext-cookie-monster > /dev/null
   depends_on: iceweasel-firefox
 
 - name: flashblock
-  desc: Iceweasel or Firefox are installed. Consider using flashblock to block potentially harmful Flash using the xul-ext-flashblock package
+  desc: Iceweasel or Firefox are installed. Use flashblock from the pts:xul-ext-flashblock package to block potentially harmful Flash
   risk: 3
   difficulty: 2
   bash: dpkg -l xul-ext-flashblock > /dev/null
   depends_on: iceweasel-firefox
 
 - name: flashplugin
-  desc: The "flashplugin-nonfree" package is installed. Keep in mind that the package cannot receive security updates from Debian
+  desc: The pts:flashplugin-nonfree package is installed. Keep in mind that the package cannot receive security updates from Debian
   url: https://wiki.debian.org/FlashPlayer
   risk: 3
   difficulty: 2
   bash: dpkg -l xul-ext-cookie-monster > /dev/null
   depends_on: debian
 
-# TODO: calibre plugins, vim plugins, bios, disk encryption, swap encryption
+- name: firewire
+  desc: Fireware ports are vulnerable to physical attacks. Consider disabling them in the BIOS or by blacklisting the kernel modules.
+  url: https://security.stackexchange.com/questions/4098/how-to-disable-firewire-in-openbsd-linux-to-prevent-attacks-through-firewire
+  risk: 1
+  difficulty: 3
+  bash: lsmod | grep -q -e ohci1394 -e sbp2 -e dv1394 -e raw1394 -e video1394 -e firewire-ohci -e firewire-sbp2
+  depends_on: debian
+
+- name: calibre
+  desc: The Calibre application is installed. Keep in mind that installing Calibre plugins from the Internet can be dangerous.
+  risk: 1
+  difficulty: 1
+  bash: dpkg -l calibre >/dev/null; exit $((1-$?))
+  depends_on: debian
+
+- name: vim plugins
+  desc: There are Vim plugins installed in ~/.vim Keep in mind that they are not receiving security updates. If available, use packages from the Debian repositories
+  risk: 1
+  difficulty: 1
+  bash: find ~/.vim/ -name '*.vim' | egrep -q '.*'; exit $((1-$?))
+  depends_on: debian
+
+  bash: dpkg -l calibre >/dev/null; exit $((1-$?))
+
+- name: audit tools
+  desc: "A number of system auditing tools are available: pts:aide pts:checksecurity pts:chkrootkit pts:fcheck pts:integrit pts:rkhunter pts:samhain pts:tiger pts:tripwire pts:unhide"
+  difficulty: 3
+  depends_on: debian
+
+# TODO: bios, disk encryption, swap encryption
 # wipe on shutdown/suspend: ram, swap, gnupg password, ssh agent, disk password
 # (by unmounting it), /tmp
+# USB, HDMI, firewire
+

@@ -9,6 +9,7 @@
 
 from gi.repository import Gtk
 from utils import get_resource
+import re
 
 
 class UI(object):
@@ -25,10 +26,18 @@ class UI(object):
         self._add_intro_tab()
 
     @staticmethod
-    def add_label(vbox, text):
+    def _replace_pts_links(text):
+        """Replace links to the Debian PTS"""
+        return re.sub(
+            r'pts:([\w-]+)',
+            r'<a href="https://packages.debian.org/sid/\1">\1</a>',
+            text
+        )
+
+    def add_label(self, vbox, text):
         """Add label"""
-        label = Gtk.Label(text)
-        label.set_use_markup(True)
+        label = Gtk.Label()
+        label.set_markup(self._replace_pts_links(text))
         label.set_alignment(0, 0.5)
         label.show()
         vbox.pack_start(label, False, False, 0)
