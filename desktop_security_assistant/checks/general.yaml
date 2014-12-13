@@ -27,7 +27,13 @@
   bash: apt-get -s dist-upgrade |grep "^Inst" |grep -q -i ':securi'; exit $((1-$?))
 
 - name: bios password
-  desc: Configure a password on your BIOS
+  desc: Configure a password on the BIOS
+  url: https://www.debian.org/doc/manuals/securing-debian-howto/ch3.en.html#s-bios-passwd
+  risk: 2
+  difficulty: 3
+
+- name: boot sequence
+  desc: Configure the boot sequence in the BIOS to disable booting from removable devices
   url: https://www.debian.org/doc/manuals/securing-debian-howto/ch3.en.html#s-bios-passwd
   risk: 2
   difficulty: 3
