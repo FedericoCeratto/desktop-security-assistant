@@ -152,8 +152,19 @@
   difficulty: 3
   depends_on: debian
 
+- name: pidgin otr
+  desc: pts:pidgin is installed without the pts:pidgin-otr package. Use Off-the-Record to protect the privacy of your instant messaging communications.
+  risk: 3
+  difficulty: 2
+  url: https://otr.cypherpunks.ca/
+  bash: dpkg -l pidgin >/dev/null && (dpkg -l pidgin-otr >/dev/null || exit 1)
+  depends_on: debian
+
+
 # TODO: bios, disk encryption, swap encryption
-# wipe on shutdown/suspend: ram, swap, gnupg password, ssh agent, disk password
-# (by unmounting it), /tmp
+# wipe on shutdown/suspend:
+#  ram, swap, gnupg password, ssh agent, disk password
+# (by unmounting it), /tmp, end OTR conversations
 # USB, HDMI, firewire
+# IM applications -> suggest using OTR
 
