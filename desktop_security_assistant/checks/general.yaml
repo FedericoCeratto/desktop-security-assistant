@@ -160,11 +160,25 @@
   bash: dpkg -l pidgin >/dev/null && (dpkg -l pidgin-otr >/dev/null || exit 1)
   depends_on: debian
 
+- name: irssi otr
+  desc: pts:irssi is installed without the pts:irssi-plugin-otr package. Use Off-the-Record to protect the privacy of your instant messaging communications.
+  risk: 3
+  difficulty: 2
+  url: https://otr.cypherpunks.ca/
+  bash: dpkg -l irssi >/dev/null && (dpkg -l irssi-plugin-otr >/dev/null || exit 1)
+  depends_on: debian
+
+- name: bitlbee otr
+  desc: pts:bitlbee is installed without the pts:bitlbee-plugin-otr package. Use Off-the-Record to protect the privacy of your instant messaging communications.
+  risk: 3
+  difficulty: 2
+  url: https://otr.cypherpunks.ca/
+  bash: dpkg -l bitlbee >/dev/null && (dpkg -l bitlbee-plugin-otr >/dev/null || exit 1)
+  depends_on: debian
+
 
 # TODO: bios, disk encryption, swap encryption
 # wipe on shutdown/suspend:
 #  ram, swap, gnupg password, ssh agent, disk password
 # (by unmounting it), /tmp, end OTR conversations
 # USB, HDMI, firewire
-# IM applications -> suggest using OTR
-
