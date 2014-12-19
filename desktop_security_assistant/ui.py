@@ -8,9 +8,11 @@
 # Released under AGPLv3+ license, see LICENSE
 
 from gi.repository import Gtk
+from logging import getLogger
 from utils import get_resource
 import re
 
+log = getLogger(__name__)
 
 class UI(object):
     def __init__(self):
@@ -115,7 +117,6 @@ difficulty: the level of skill and work required to follow the suggestion
         hidebutton.set_size_request(10, 20)
         hidebutton.connect('clicked', self.hide_check_tab)
         vbox.pack_start(hidebutton, False, False, 0)
-
 
     def hide_check_tab(self, button):
         page = self._notebook.get_current_page()
