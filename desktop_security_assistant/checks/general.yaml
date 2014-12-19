@@ -176,6 +176,13 @@
   bash: dpkg -l bitlbee >/dev/null && (dpkg -l bitlbee-plugin-otr >/dev/null || exit 1)
   depends_on: debian
 
+- name: swap
+  desc: A non-encrypted swap partition is in use. Encrypt your swap partitions, they are likely to contain sensitive data.
+  risk: 3
+  difficulty: 3
+  url: https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_encrypted_swap_partition_with_dm_crypt
+  bash: grep -q -e '^/dev/hd' -e '/dev/sd' /proc/swaps; exit $((1-$?))
+
 
 # TODO: bios, disk encryption, swap encryption
 # wipe on shutdown/suspend:
