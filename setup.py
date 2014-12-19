@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 
 CLASSIFIERS = map(str.strip,
 """Environment :: Console
@@ -33,6 +33,7 @@ setup(
     classifiers=CLASSIFIERS,
     keywords="desktop security",
     install_requires=[
+        'gi',
         'setproctitle>=1.0.1',
     ],
     packages=['desktop_security_assistant'],
