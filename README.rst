@@ -3,10 +3,6 @@
    :target: http://travis-ci.org/FedericoCeratto/desktop-security-assistant
    :alt: Build status
 
-.. image:: https://coveralls.io/repos/FedericoCeratto/desktop-security-assistant/badge.png?branch=master
-   :target: https://coveralls.io/r/FedericoCeratto/desktop-security-assistant?branch=master
-   :alt: Coverage
-
 .. image:: https://pypip.in/download/desktop-security-assistant/badge.png
     :target: https://pypi.python.org/pypi//desktop-security-assistant/
     :alt: Downloads
