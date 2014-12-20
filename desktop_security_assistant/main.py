@@ -22,10 +22,12 @@ from utils import get_resource
 log = logging.getLogger(__name__)
 
 
-def setup_logging():
-    log.setLevel(logging.DEBUG)
+def setup_logging(debug):
     ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    if debug:
+        log.setLevel(logging.DEBUG)
+        ch.setLevel(logging.DEBUG)
+
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     ch.setFormatter(formatter)
     log.addHandler(ch)
@@ -155,21 +157,51 @@ def load_configuration_files():
 
 def parse_args():
     ap = ArgumentParser()
-    ap.add_argument('-c', '--cli', help='run from command line')
+    ap.add_argument('-c', '--cli', help='run from command line',
+                    action='store_true')
+    ap.add_argument('-d', '--debug', help='verbose logging',
+                    action='store_true')
     args = ap.parse_args()
     return args
 
 
+def print_out_checks(checks_to_be_displayed):
+    """Print active checks to stdout"""
+    for check in checks_to_be_displayed:
+        print
+        print "Name:        %s" % check.name
+        print "Description: %s" % check.desc
+        if check.risk:
+            print "Risk:        %s" % ('*' * check.risk)
+
+        if check.difficulty:
+            print "Difficulty:  %s" % ('*' * check.difficulty)
+
+        if check.url:
+            print "URL:         %s" % check.url
+
+    print
+
+
 def main():
     setproctitle('desktop-security-assistant')
-    setup_logging()
     args = parse_args()
-    ui = UI()
+    setup_logging(args.debug)
+
     conf = load_configuration_files()
 
+    checks_to_be_displayed = []
     for c in scan_and_run_config_blocks(conf):
         if c.status != 'disabled' and not c.hidden:
-            ui.add_check_tab(c)
+            checks_to_be_displayed.append(c)
+
+    if args.cli:
+        print_out_checks(checks_to_be_displayed)
+        return
+
+    ui = UI()
+    for c in checks_to_be_displayed:
+        ui.add_check_tab(c)
 
     ui.main()
 
