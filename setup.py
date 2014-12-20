@@ -34,6 +34,7 @@ setup(
     keywords="desktop security",
     install_requires=[
         'gi',
+        'PyYAML',
         'setproctitle>=1.0.1',
     ],
     packages=['desktop_security_assistant'],
