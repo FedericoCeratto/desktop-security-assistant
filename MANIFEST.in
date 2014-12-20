@@ -1,7 +1,6 @@
 # Used by setup.py sdist to include files in the source package
-include checks/*.yaml
 include setup.py
 include README.rst
 include LICENSE
-include data/*.png
-include data/*.ui
+include desktop_security_assistant/checks/*.yaml
+include desktop_security_assistant/data/*.png
