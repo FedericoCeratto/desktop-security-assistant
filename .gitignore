@@ -52,3 +52,13 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*.priv
+*.pyc
+*.swp
+*~
+.tox
+build
+cover
+dist/
+docs/_build
