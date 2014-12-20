@@ -33,7 +33,6 @@ setup(
     classifiers=CLASSIFIERS,
     keywords="desktop security",
     install_requires=[
-        'gi',
         'PyYAML',
         'setproctitle>=1.0.1',
     ],

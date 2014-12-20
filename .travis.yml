@@ -1,9 +1,17 @@
 language: python
 python:
   - "2.7"
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -qq python-gi
+
+virtualenv:
+  system_site_packages: true
+
 install:
   - pip install -e . --use-mirrors
   - pip install pytest
 
-script: 
+script:
   - py.test tests/test_checks_parsing.py
