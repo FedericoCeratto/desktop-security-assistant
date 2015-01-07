@@ -42,3 +42,4 @@ Roadmap
 -------
 
 * Implement more checks
+* Package for Debian
