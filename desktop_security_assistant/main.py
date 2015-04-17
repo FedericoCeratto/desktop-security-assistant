@@ -168,19 +168,19 @@ def parse_args():
 def print_out_checks(checks_to_be_displayed):
     """Print active checks to stdout"""
     for check in checks_to_be_displayed:
-        print
-        print "Name:        %s" % check.name
-        print "Description: %s" % check.desc
+        print('')
+        print("Name:        %s" % check.name)
+        print("Description: %s" % check.desc)
         if check.risk:
-            print "Risk:        %s" % ('*' * check.risk)
+            print("Risk:        %s" % ('*' * check.risk))
 
         if check.difficulty:
-            print "Difficulty:  %s" % ('*' * check.difficulty)
+            print("Difficulty:  %s" % ('*' * check.difficulty))
 
         if check.url:
-            print "URL:         %s" % check.url
+            print("URL:         %s" % check.url)
 
-    print
+    print('')
 
 
 def main():
