@@ -31,6 +31,13 @@ Development status
 
 In development. Testing and contributions are welcome!
 
+Installing
+----------
+
+On Debian (and derivative) systems install the required dependencies:
+
+apt-get install python-yaml python-setproctitle python-gi
+
 Screenshots 
 ----------- 
  
