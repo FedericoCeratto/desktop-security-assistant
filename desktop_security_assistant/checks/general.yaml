@@ -191,7 +191,7 @@
   bash: test -f /etc/default/macchanger && grep -q 'ENABLE_ON_POST_UP_DOWN=true' /etc/default/macchanger
   depends_on: debian
 
-# TODO: BIOS, disk encryption, USB, HDMI
+# TODO: BIOS, disk encryption, USB, HDMI, Avahi
 # on shutdown: RAM, swap, gnupg password, ssh agent password, disk password (by unmounting it), /tmp, end OTR conversations
 # on suspend: wipe gnupg password, ssh agent password, end OTR conversations, start screensaver
 # See https://tails.boum.org/contribute/design/memory_erasure/
