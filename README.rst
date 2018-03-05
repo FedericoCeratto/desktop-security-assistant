@@ -1,13 +1,13 @@
 
-.. image:: https://pypip.in/download/desktop-security-assistant/badge.png
+.. image:: https://img.shields.io/pypi/dm/desktop-security-assistant.svg
     :target: https://pypi.python.org/pypi//desktop-security-assistant/
     :alt: Downloads
 
-.. image:: https://pypip.in/version/desktop-security-assistant/badge.png
+.. image:: https://img.shields.io/pypi/v/desktop-security-assistant.svg
     :target: https://pypi.python.org/pypi/desktop-security-assistant/
     :alt: Latest Version
 
-.. image:: https://pypip.in/license/desktop-security-assistant/badge.png
+.. image:: https://img.shields.io/pypi/l/desktop-security-assistant.svg
     :target: https://pypi.python.org/pypi/desktop-security-assistant/
     :alt: License
 
